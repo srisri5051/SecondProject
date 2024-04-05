@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+</head>
+<body>
+    <h1>Product List</h1>
+    <ul>
+        {% for product in products %}
+            <li>{{ product.name }}</li>
+            <div class="col">
+                <div class="card" style="width:100rem;">
+                    <img class="card-img-top" src="{{ product.image }}" width='200' height='250' class="card-images-top" alt="product Image">
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">Discount-30% - ${{ product.price }}</p>
+                        <p class="card-text">Quantity - {{ product.quantity }}</p>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </ul>
+    
+</body>
+</html>
