@@ -1,5 +1,5 @@
 
-from .models import Product
+from .models import Product, Wishlist
 from django import forms
 from .models import User
 
@@ -29,11 +29,17 @@ class RegistrationForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'country', 'quantity', 'price', 'image']
+        fields = ['name', 'quantity','price', 'image']
         labels = {
             'name': 'Name',
-            'country': 'Country',
             'quantity': 'Quantity',
             'price': 'Price',
             'image': 'Image',
         }
+
+
+
+class WishlistForm(forms.ModelForm):
+    class Meta:
+        model = Wishlist
+        fields = []

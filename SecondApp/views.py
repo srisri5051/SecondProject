@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, ProductForm
+from .forms import RegistrationForm, ProductForm, WishlistForm
 from .models import User, Product
 
 
@@ -91,3 +91,43 @@ def delete_product(request, product_id):
     return render(request, 'delete_product.html', {'product': product})
 
 
+from .models import User, Product, Wishlist
+@login_required
+def wishlist(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
+
+@login_required
+def add_to_wishlist(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    existing_wishlist_item = Wishlist.objects.filter(user=request.user, product=product).first()
+
+    if existing_wishlist_item:
+        messages.info(request, 'This item is already in your wishlist.')
+        return redirect('wishlist')
+
+    if request.method == 'POST':
+        form = WishlistForm(request.POST)
+        if form.is_valid():
+            wishlist_item = form.save(commit=False)
+            wishlist_item.user = request.user
+            wishlist_item.product = product
+            wishlist_item.save()
+            messages.success(request, 'Item added to wishlist successfully.')
+            return redirect('wishlist')
+    else:
+        form = WishlistForm()
+
+    return render(request, 'add_to_wishlist.html', {'form': form, 'product': product})
+
+
+@login_required
+def remove_from_wishlist(request, wishlist_item_id):
+    wishlist_item = get_object_or_404(Wishlist, pk=wishlist_item_id, user=request.user)
+
+    if request.method == 'POST':
+        wishlist_item.delete()
+        messages.success(request, 'Item removed from wishlist successfully.')
+        return redirect('wishlist')
+
+    return redirect('wishlist') 
