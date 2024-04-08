@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegistrationForm, ProductForm, WishlistForm
-from .models import User, Product
+from .models import User, Product, Wishlist
 
 
 def main_home(request):
@@ -91,7 +91,7 @@ def delete_product(request, product_id):
     return render(request, 'delete_product.html', {'product': product})
 
 
-from .models import User, Product, Wishlist
+
 @login_required
 def wishlist(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)

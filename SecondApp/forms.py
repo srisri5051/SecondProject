@@ -26,6 +26,8 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Dealer details are required for dealer registration')
 
         return cleaned_data
+    
+    
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
