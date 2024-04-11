@@ -1,17 +1,71 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Home</title>
     <style>
-        .text{
-            text-align:center
+        /* Center align text */
+        .text {
+            text-align: center;
         }
+
+        /* Style for the h1 heading */
+        .text h1 {
+            font-size: 2em;
+            color: #333; /* Dark gray */
+            margin-bottom: 20px; /* Add some space below */
+        }
+
+        /* Style for paragraphs */
+        .text p {
+            font-size: 1.2em;
+            color: #666; /* Medium gray */
+        }
+
+        /* Style for links */
+        .text a {
+            color: #007bff; /* Blue */
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* Hover effect for links */
+        .text a:hover {
+            text-decoration: underline; /* Add underline on hover */
+        }
+
+        /* Background color for the body */
+        body {
+            background-color: #e9ec10; /* Light gray */
+        }
+
     </style>
 </head>
 <body>
-    <div class=text>
+    <div class="text">
+        <h1>Welcome to the Main Homepage</h1>
+        <p>This is the main homepage of the application.</p>
+        <p><a href="{% url 'registration' %}">Register</a></p>
+        <p><a href="{% url 'login' %}">Login</a></p>
+    </div>
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Home</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main_home.css' %}">
+</head>
+<body>
+    <div class="text">
         <h1>Welcome to the Main Homepage</h1>
         <p>This is the main homepage of the application.</p>
         <p><a href="{% url 'registration' %}">Register</a></p>
@@ -19,3 +73,4 @@
     </div>
 </body>
 </html>
+

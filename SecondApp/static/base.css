@@ -1,0 +1,36 @@
+/* Reset default margin and padding */
+body, ul {
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation bar styles */
+nav {
+    background-color: #333; /* Dark gray */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    display: block;
+    padding: 15px 20px;
+    color: #fff; /* White */
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background-color: #555; /* Darker gray */
+}
+
+/* Content area styles */
+.content {
+    padding: 20px;
+}

@@ -1,0 +1,33 @@
+/* Center align text */
+.text {
+    text-align: center;
+}
+
+/* Style for the h1 heading */
+.text h1 {
+    font-size: 2em;
+    color: #333; /* Dark gray */
+    margin-bottom: 20px; /* Add some space below */
+}
+
+/* Style for paragraphs */
+.text p {
+    font-size: 1.2em;
+    color: #666; /* Medium gray */
+}
+
+/* Style for links */
+.text a {
+    color: #007bff; /* Blue */
+    text-decoration: none; /* Remove underline */
+}
+
+/* Hover effect for links */
+.text a:hover {
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* Background color for the body */
+body {
+    background-color: #e9ec10; /* Light gray */
+}

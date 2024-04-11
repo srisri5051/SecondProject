@@ -1,10 +1,15 @@
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, ProductForm, WishlistForm
+from .forms import RegistrationForm, ProductForm, WishlistForm, CustomPasswordChangeForm, UserProfileForm
 from .models import User, Product, Wishlist
+from django.contrib.auth import update_session_auth_hash  
+from django.utils.html import mark_safe
+
+
+
 
 
 def main_home(request):
@@ -38,9 +43,13 @@ def user_login(request):
             if user is not None:
                 login(request, user)
                 if user.role == User.Role.DEALER:
-                    return redirect('add_product')
+                    return redirect('product_list')
+                #add_product
+                #product_list
+                #profile_details
                 else:
                     return redirect('user_home')
+                #user_home
             else:
                 messages.error(request, 'Invalid username or password.')
     else:
@@ -51,6 +60,51 @@ def user_login(request):
 def user_home(request):
     products = Product.objects.all()
     return render(request, 'user_home.html', {'products': products})
+
+
+
+
+
+
+
+
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  
+            return redirect('home') 
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
+    return render(request, 'change_password.html', {'form': form})
+
+@login_required
+def update_user_details(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your details were successfully updated!')
+            return redirect('user_home')
+    else:
+        form = UserProfileForm(instance=user)
+    return render(request, 'update_user_details.html', {'form': form})
+
+
+
+
+
+
+
+
+
+
+
 
 @login_required
 def product_list(request):
@@ -89,6 +143,52 @@ def delete_product(request, product_id):
         product.delete()
         return redirect('product_list')
     return render(request, 'delete_product.html', {'product': product})
+
+
+
+
+
+
+
+
+
+
+
+def product_search(request):
+    query = request.GET.get('query')
+    if query:
+        products = Product.objects.filter(name__icontains=query)
+        highlighted_products = []
+        for product in products:
+            product_name = product.name
+            highlighted_text = product_name.replace(query, f'<span style="background-color: yellow;">{query}</span>')
+            highlighted_products.append((product, mark_safe(highlighted_text)))
+    else:
+        products = Product.objects.all()
+        highlighted_products = [(product, product.name) for product in products]
+
+    return render(request, 'search_results.html', {'highlighted_products': highlighted_products, 'query': query})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -131,3 +231,60 @@ def remove_from_wishlist(request, wishlist_item_id):
         return redirect('wishlist')
 
     return redirect('wishlist') 
+
+
+
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('main_home') 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from django.shortcuts import render, redirect
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth import logout
+
+# @login_required
+# def profile_details(request):
+#     # Add your logic to fetch and display profile details here
+#     return render(request, 'profile_details.html')
+
+# @login_required
+# def edit_profile(request):
+#     # Add your logic to handle editing profile here
+#     return render(request, 'edit_profile.html')
+
+# @login_required
+# def change_password(request):
+#     # Add your logic to handle changing password here
+#     return render(request, 'change_password.html')
+
+# @login_required
+# def sign_out(request):
+#     logout(request)
+#     return redirect('login')  # Redirect to the login page after signing out

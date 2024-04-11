@@ -44,12 +44,15 @@
             transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #35dde9;
+        }
+        body {
+            background-color: #b2b7b9; /* Light gray */
         }
     </style>
 </head>
 <body>
-    <h2>Login</h2>
+    <h2>Login Page</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
