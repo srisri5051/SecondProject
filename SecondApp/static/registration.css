@@ -1,52 +1,63 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-}
+/* registration.css */
 
-h2 {
-    text-align: center;
-    margin-top: 30px;
-    color: #444;
-}
-
-form {
+/* Container styles */
+.container {
     max-width: 400px;
-    margin: 20px auto;
+    margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
 }
 
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 12px;
+/* Form heading styles */
+.container h2 {
+    font-size: 24px;
     margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Form input styles */
+.container input[type="text"],
+.container input[type="email"],
+.container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
     box-sizing: border-box;
 }
 
-button[type="submit"] {
+/* Form button styles */
+.container button {
     width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
-    color: #fff;
+    padding: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
-    background-color: #45a049;
+.container button:hover {
+    background-color: #0056b3;
 }
 
-.error-message {
-    color: #ff0000;
-    font-size: 0.9em;
-    margin-top: 5px;
+/* Additional styles */
+.container p {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.container p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.container p a:hover {
+    text-decoration: underline;
 }

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Product, Wishlist
+from .models import User, Product, Wishlist, Category
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -33,3 +33,9 @@ class WishlistAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'product__name')
 
 admin.site.register(Wishlist, WishlistAdmin)
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)  
+
+admin.site.register(Category, CategoryAdmin)

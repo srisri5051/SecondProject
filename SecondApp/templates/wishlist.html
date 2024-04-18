@@ -1,112 +1,41 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishlist</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            text-align: center;
-            margin-top: 50px;
-            color: #333;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 20px auto;
-            max-width: 600px;
-        }
-        li {
-            background-color: #fff;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .wishlist-item {
-            padding: 20px;
-        }
-        h3 {
-            margin: 0;
-            color: #333;
-        }
-        p {
-            margin: 10px 0;
-            color: #666;
-        }
-        button {
-            background-color: #ff4d4d;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #cc0000;
-        }
-    </style>
-</head>
-<body>
-    <h1>Wishlist</h1>
-    <ul>
+{% extends 'base.html' %}
+
+{% block title %}
+    Wishlist
+{% endblock %}
+
+{% block content %}
+    <h1 class="wishlist-heading">Wishlist</h1>
+    <div class="row">
         {% for item in wishlist_items %}
-        <li>
-            <div class="wishlist-item">
-                <h3>{{ item.product.name }}</h3>
-                <p>Price: ${{ item.product.price }}</p>
-                <p>Quantity: {{ item.product.quantity }}</p>
-                <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Remove from Wishlist</button>
-                </form>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if item.product.image %}
+                        <div class="card-img-container">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }} Image" class="card-img-top mb-3" style="height: 200px;">
+                        </div>
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.product.name }}</h5>
+                        <p class="card-text">Price: ${{ item.product.price }}</p>
+                        <p class="card-text">Quantity: {{ item.product.quantity }}</p>
+                        <form method="post" action="{% url 'add_to_cart' item.product.id %}" class="mb-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+                        </form>
+                        <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger mb-2">Remove from Wishlist</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </li>
         {% empty %}
-        <li>Your wishlist is empty.</li>
-        {% endfor %}
-    </ul>
-</body>
-</html> -->
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wishlist</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'wishlist.css' %}">
-</head>
-<body>
-    <h1>Wishlist</h1>
-    <ul>
-        {% for item in wishlist_items %}
-        <li>
-            <div class="wishlist-item">
-                <h3>{{ item.product.name }}</h3>
-                <p>Price: ${{ item.product.price }}</p>
-                <p>Quantity: {{ item.product.quantity }}</p>
-                <form method="post" action="{% url 'remove_from_wishlist' item.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Remove from Wishlist</button>
-                </form>
+            <div class="col">
+                <p class="wishlist-empty">Your wishlist is empty.</p>
             </div>
-        </li>
-        {% empty %}
-        <li>Your wishlist is empty.</li>
         {% endfor %}
-    </ul>
-</body>
-</html>
-
+    </div>
+{% endblock %}

@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}Srinu Bazaar{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}saki{% endblock %}</title>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -13,17 +13,22 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'base.css' %}">
+    
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
+        <!-- Shop Logo -->
         <a class="navbar-brand" href="#">
-            {% if user.is_authenticated %}
-                {{ user.username }}
-            {% else %}
-                venky Shop
-            {% endif %}
+            
         </a>
+        {% if user.is_authenticated %}
+            <span class="navbar-text ml-2">{{ user.username }}</span>
+        {% else %}
+            <span class="navbar-text ml-2">venky Shop</span>
+        {% endif %}
+        
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -32,43 +37,57 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
-                    {% if user.role == 'DEALER' %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'product_list' %}">Dealer Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'update_user_details' %}">Dealer Profile</a>
-                        </li>
-                    {% else %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Home
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="nav-link" href="{% url 'user_home' %}">User Home</a>
-                            <a class="nav-link" href="{% url 'product_list' %}">Dealer Home</a>
-                        </div>
-                        </li>
-                    {% endif %}
-                      
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-5LrnPfxm7Cm3Ethb1JNaZtXeRttAUVgFDsbalZVFmQ&s" alt="Profile Image">
-                        </a>
+                {% if user.role == 'dealer' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'product_list' %}">Dealer Home</a>
+                    </li>
 
-                        <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Profile -->
-                        </a>
+                            <div class="user-profile-icon">
+                                {{ user.username|first|upper }} <!-- Display first letter of username -->
+                            </div>
+                        </a> 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'update_user_details' %}">User Update Details</a>
+                            <a class="dropdown-item" href="{% url 'update_user_details' %}">Update Details</a>
                             <a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a>
+                            <a class="dropdown-item" href="{% url 'view_profile' %}">Viewprofile</a>
+
+                            <!-- <a class="dropdown-item" href="{% url 'view_cart' %}">Cart List</a> -->
+
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'logout' %}">Signout</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         </div>
                     </li> 
+                {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user_home' %}">User Home</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="user-profile-icon">
+                                {{ user.username|first|upper }} <!-- Display first letter of username -->
+                            </div>
+                        </a> 
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'update_user_details' %}">Update Details</a>
+                            <a class="dropdown-item" href="{% url 'change_password' %}">Change Password</a>
+                            <a class="dropdown-item" href="{% url 'view_profile' %}">Viewprofile</a>
+
+                            <a class="dropdown-item" href="{% url 'view_cart' %}">Cart List</a>
+
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </li> 
+                {% endif %}
+                      
+                    
+                    
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'registration' %}">Register</a>
@@ -83,19 +102,7 @@
 </nav>
 
 <div class="container mt-4">
-    {% block content %}
-        <!-- Default content -->
-        <h1>Welcome to {% if user.is_authenticated %}{{ user.username }}'s{% else %}venky{% endif %} Shop</h1>
-        <p>Explore our products and services.</p>
-        <div class="row">
-            <div class="col">
-                <button class="btn btn-primary btn-block">View Products</button>
-            </div>
-            <div class="col">
-                <button class="btn btn-secondary btn-block">Special Offers</button>
-            </div>
-        </div>
-    {% endblock %}
+    {% block content %}{% endblock %}
 </div>
 
 <!-- Bootstrap JS and Dependencies -->
@@ -108,5 +115,22 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+<!-- Additional JavaScript for category highlighting -->
+<script>
+    $(document).ready(function() {
+        $('ul.categories-list a').click(function(event) {
+            event.preventDefault();
+            var categoryId = $(this).attr('data-category-id');
+            
+            // Remove existing highlight from all product cards
+            $('.product-card').removeClass('highlighted');
+            
+            // Highlight product cards belonging to the selected category
+            $('.product-card[data-category-id="' + categoryId + '"]').addClass('highlighted');
+        });
+    });
+</script>
+
 </body>
 </html>
